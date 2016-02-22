@@ -1,0 +1,6 @@
+[database]
+server = localhost
+user   = myuser
+pass   = mypass
+db     = mydb
+secret = mysecret

@@ -1,0 +1,16 @@
+#!/bin/bash
+# Run this script as a cron job
+# execute: crontab -e
+# And add the line: */5 * * * * /usr/local/bin/iot.sh
+
+email="myemail"
+pass="mypass"
+secret="mysecret"
+
+token=$(curl -s "https://neviweb.com/api/login" -H "Content-Type: application/x-www-form-urlencoded" --data "email=$email&password=$pass"| jq -r .session)
+temp1=$(curl -s "https://neviweb.com/api/device/3381/data?force=2" -H "Session-Id: $token"| jq -r .temperature)
+temp2=$(curl -s "https://neviweb.com/api/device/3380/data?force=2" -H "Session-Id: $token"| jq -r .temperature)
+temp3=$(curl -s "https://neviweb.com/api/device/3379/data?force=2" -H "Session-Id: $token"| jq -r .temperature)
+temp4=$(curl -s "https://neviweb.com/api/device/3378/data?force=2" -H "Session-Id: $token"| jq -r .temperature)
+
+curl -s "http://localhost:8080/iot/add.php" --data "temp1=$temp1&temp2=$temp2&temp3=$temp3&temp4=$temp4&key=$secret"

@@ -1,0 +1,64 @@
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>IoT Home</title>
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var inputMax = location.search.split('max=')[1]
+			var options = {
+				chart: {
+					renderTo: 'container'
+				},
+				title: {
+					text: 'Home Temperature'
+				},
+				xAxis: {
+					labels: {
+						enabled:false
+					}
+				},
+				yAxis: {
+					title: {
+						text: 'Celcius'
+					}
+				},
+				tooltip: {
+					formatter: function() {
+						return '<b>'+ this.series.name +'</b><br/>'+
+						this.x +' = '+ this.y
+					}
+				},
+				series: []
+			}
+			if(typeof inputMax === 'undefined'){
+				inputMax = "100";
+			}
+			$.getJSON("data.php?max=" + inputMax, function(json) {
+				options.xAxis.categories = json[0]['data'];
+				options.series[0] = json[1];
+				options.series[1] = json[2];
+				options.series[2] = json[3];
+				options.series[3] = json[4];
+				chart = new Highcharts.Chart(options);
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="container" style="margin: 0 auto"></div>
+	<input type=button value='Refresh' onclick="refresh()"  id="refresh">
+	Max entries: <input type="text" value="100" id="max" onkeypress="handle(event)"><br>
+	<script>
+		function refresh() {
+			var url = document.getElementById("max").value;
+			window.location.href = "graph.html?max="+url;
+		}
+		function handle(e){
+			if(e.keyCode === 13){
+				$("#refresh").click();
+			}
+			return false;
+		}
+	</script>
+</body>
