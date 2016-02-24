@@ -19,11 +19,11 @@ $numcolumn = mysqli_num_fields($result);
 
 for ($i = 0; $i < $numcolumn; $i++){
 	mysqli_data_seek($result, 0);
-	$finfo = mysqli_fetch_field_direct($result, $i);
+	$field = mysqli_fetch_field($result);
 
-	$array[$i]['name'] = $finfo->name;
+	$array[$i]['name'] = $field->name;
 	while($r = mysqli_fetch_array($result)){
-		$array[$i]['data'][] = $r[$finfo->name];
+		$array[$i]['data'][] = $r[$field->name];
 	}
 }
 
