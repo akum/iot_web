@@ -2,6 +2,8 @@
 require("connect.php");
 
 $max = $_GET["max"];
+$name = $_GET["name"];
+$name="timeStamp," . $name;
 
 $result = mysqli_query($link, "SELECT COUNT(0) FROM tempLog");
 $count = mysqli_fetch_assoc($result);
@@ -12,7 +14,7 @@ if ($max > $num_rows){
 }
 $startrow = $num_rows - $max;
 
-$result = mysqli_query($link, "SELECT * FROM tempLog LIMIT $startrow, $max");
+$result = mysqli_query($link, "SELECT $name FROM tempLog LIMIT $startrow, $max");
 
 $array = array();
 $numcolumn = mysqli_num_fields($result);
