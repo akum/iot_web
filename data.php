@@ -1,34 +1,27 @@
 <?php
 require("connect.php");
 
-$max = $_GET["max"];
-$name = $_GET["name"];
-$name="timeStamp," . $name;
+$end = $_GET["max"];
+$col = $_GET["col"];
+$col = "timeStamp," . $col;
 
-$result = mysqli_query($link, "SELECT COUNT(0) FROM tempLog");
-$count = mysqli_fetch_assoc($result);
-$num_rows = $count['COUNT(0)'];
+$result = mysqli_query($link, "SELECT 0 FROM tempLog");
+$rows_count = mysqli_num_rows($result);
 
-if ($max > $num_rows){
-	$max = $num_rows;
-}
-$startrow = $num_rows - $max;
+if ($end > $rows_count) $end = $rows_count;
+$start = $rows_count - $end;
+$result = mysqli_query($link, "SELECT $col FROM tempLog LIMIT $start, $end");
 
-$result = mysqli_query($link, "SELECT $name FROM tempLog LIMIT $startrow, $max");
-
-$array = array();
-$numcolumn = mysqli_num_fields($result);
-
-for ($i = 0; $i < $numcolumn; $i++){
+$col_count = mysqli_num_fields($result);
+for ($i = 0; $i < $col_count; $i++){
 	mysqli_data_seek($result, 0);
 	$field = mysqli_fetch_field($result);
 
 	$array[$i]['name'] = $field->name;
-	while($r = mysqli_fetch_array($result)){
-		$array[$i]['data'][] = $r[$field->name];
+	while($row = mysqli_fetch_array($result)){
+		$array[$i]['data'][] = $row[$field->name];
 	}
 }
 
 print json_encode($array, JSON_NUMERIC_CHECK);
-mysqli_close($link);
 ?>
