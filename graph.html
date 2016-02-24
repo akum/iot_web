@@ -7,33 +7,31 @@
 		$(document).ready(function() {
 			var inputMax = location.search.split('max=')[1]
 			var options = {
+				title: {text: 'Home Temperature'},
+				xAxis: {labels: {enabled: false}},
+				yAxis: {title: {text: 'Celcius'}},
+				series: [],
 				chart: {
+					zoomType: 'x',
 					renderTo: 'container'
-				},
-				title: {
-					text: 'Home Temperature'
-				},
-				xAxis: {
-					labels: {
-						enabled:false
-					}
-				},
-				yAxis: {
-					title: {
-						text: 'Celcius'
-					}
 				},
 				tooltip: {
 					formatter: function() {
 						return '<b>'+ this.series.name +'</b><br/>'+
 						this.x +' = '+ this.y
 					}
-				},
-				series: []
+				}
 			}
+
+			var options2 = JSON.parse(JSON.stringify(options));
+			options2.chart.renderTo = "container2";
+			options2.chart.type = "area";
+			options2.title.text= "Heat Level";
+
 			if(typeof inputMax === 'undefined'){
 				inputMax = "100";
 			}
+
 			$.getJSON("data.php?max=" + inputMax, function(json) {
 				options.xAxis.categories = json[0]['data'];
 				options.series[0] = json[1];
@@ -42,11 +40,22 @@
 				options.series[3] = json[4];
 				chart = new Highcharts.Chart(options);
 			});
+
+			$.getJSON("data.php?max=" + inputMax, function(json) {
+				options2.xAxis.categories = json[0]['data'];
+				options2.series[0] = json[5];
+				options2.series[1] = json[6];
+				options2.series[2] = json[7];
+				options2.series[3] = json[8];
+				options2.series[4] = json[9];
+				chart2 = new Highcharts.Chart(options2);
+			});
 		});
 	</script>
 </head>
 <body>
 	<div id="container" style="margin: 0 auto"></div>
+	<div id="container2" style="margin: 0 auto"></div>
 	<input type=button value='Refresh' onclick="refresh()"  id="refresh">
 	Max entries: <input type="text" value="100" id="max" onkeypress="handle(event)"><br>
 	<script>
