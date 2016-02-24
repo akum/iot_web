@@ -11,15 +11,20 @@ zipcode="myzip"
 neviID="myID"
 
 token=$(curl -s "https://neviweb.com/api/login" -H "Content-Type: application/x-www-form-urlencoded" --data "email=$email&password=$pass"| jq -r .session)
-t1=$(curl -s "https://neviweb.com/api/device/3381/data?force=2" -H "Session-Id: $token"| jq -r .temperature)
-t2=$(curl -s "https://neviweb.com/api/device/3380/data?force=2" -H "Session-Id: $token"| jq -r .temperature)
-t3=$(curl -s "https://neviweb.com/api/device/3379/data?force=2" -H "Session-Id: $token"| jq -r .temperature)
-t4=$(curl -s "https://neviweb.com/api/device/3378/data?force=2" -H "Session-Id: $token"| jq -r .temperature)
 
-h1=$(curl -s "https://neviweb.com/api/device/3381/data?force=2" -H "Session-Id: $token"| jq -r .heatLevel)
-h2=$(curl -s "https://neviweb.com/api/device/3380/data?force=2" -H "Session-Id: $token"| jq -r .heatLevel)
-h3=$(curl -s "https://neviweb.com/api/device/3379/data?force=2" -H "Session-Id: $token"| jq -r .heatLevel)
-h4=$(curl -s "https://neviweb.com/api/device/3378/data?force=2" -H "Session-Id: $token"| jq -r .heatLevel)
+dev1=$(curl -s "https://neviweb.com/api/device/3381/data" -H "Session-Id: $token")
+dev2=$(curl -s "https://neviweb.com/api/device/3380/data" -H "Session-Id: $token")
+dev3=$(curl -s "https://neviweb.com/api/device/3379/data" -H "Session-Id: $token")
+dev4=$(curl -s "https://neviweb.com/api/device/3378/data" -H "Session-Id: $token")
+
+t1=$(echo $dev1| jq -r .temperature)
+t2=$(echo $dev2| jq -r .temperature)
+t3=$(echo $dev3| jq -r .temperature)
+t4=$(echo $dev4| jq -r .temperature)
+h1=$(echo $dev1| jq -r .heatLevel)
+h2=$(echo $dev2| jq -r .heatLevel)
+h3=$(echo $dev3| jq -r .heatLevel)
+h4=$(echo $dev4| jq -r .heatLevel)
 
 ex=$(curl -s "https://neviweb.com/api/weather/$zipcode?_=$neviID" -H "Session-Id: $token"| jq -r .temperature)
 
