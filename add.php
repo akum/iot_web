@@ -1,22 +1,20 @@
 <?php
-require("connect.php");
-$key = $_POST["key"];
+require('connect.php');
+$key = $_POST['key'];
 
 if (!strcmp($secret, $key)){
-	$temp1 = $_POST["temp1"];
-	$temp2 = $_POST["temp2"];
-	$temp3 = $_POST["temp3"];
-	$temp4 = $_POST["temp4"];
+	$t1 = $_POST['t1'];
+	$t2 = $_POST['t2'];
+	$t3 = $_POST['t3'];
+	$t4 = $_POST['t4'];
+	$h1 = $_POST['h1'];
+	$h2 = $_POST['h2'];
+	$h3 = $_POST['h3'];
+	$h4 = $_POST['h4'];
+	$ex = $_POST['ex'];
 
-	$heat1 = $_POST["h1"];
-	$heat2 = $_POST["h2"];
-	$heat3 = $_POST["h3"];
-	$heat4 = $_POST["h4"];
-
-	$exter = $_POST["ex"];
-
-	$query = "INSERT INTO tempLog (Chambre, Chambre2, SalleBain, Salon, HChambre, HChambre2, HSalleBain, HSalon, Exterieur)
-		VALUES ('".$temp1."','".$temp2."','".$temp3."','".$temp4."','".$heat1."','".$heat2."','".$heat3."','".$heat4."','".$exter."')";
+	$val = "NULL, $t1, $t2, $t3, $t4, $h1, $h2, $h3, $h4, $ex";
+	$query = "INSERT INTO tempLog VALUES ($val)";
 
 	mysqli_query($link, $query);
 }
