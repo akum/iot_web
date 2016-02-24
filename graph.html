@@ -32,13 +32,13 @@
 			document.getElementById("max").value=inputMax;
 
 			tables="Chambre,Chambre2,SalleBain,Salon";
-			$.getJSON("data.php?name="+tables+"&max="+inputMax, function(json){
+			$.getJSON("data.php?col="+tables+"&max="+inputMax, function(json){
 				options.xAxis.categories = json[0]['data'];
 				options.series = json.slice(1);
 				chart = new Highcharts.Chart(options);
 			});
 			tables="HChambre,HChambre2,HSalleBain,HSalon,Exterieur";
-			$.getJSON("data.php?name="+tables+"&max="+inputMax, function(json){
+			$.getJSON("data.php?col="+tables+"&max="+inputMax, function(json){
 				options2.xAxis.categories = json[0]['data'];
 				options2.series = json.slice(1);
 				chart2 = new Highcharts.Chart(options2);
