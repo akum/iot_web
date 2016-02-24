@@ -19,6 +19,5 @@ if (!strcmp($secret, $key)){
 		VALUES ('".$temp1."','".$temp2."','".$temp3."','".$temp4."','".$heat1."','".$heat2."','".$heat3."','".$heat4."','".$exter."')";
 
 	mysqli_query($link, $query);
-	mysqli_close($link);
 }
 ?>
