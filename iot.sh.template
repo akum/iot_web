@@ -28,4 +28,4 @@ h4=$(echo $dev4| jq -r .heatLevel)
 
 ex=$(curl -s "https://neviweb.com/api/weather/$zipcode?_=$neviID" -H "Session-Id: $token"| jq -r .temperature)
 
-curl -s "http://localhost:8080/iot/add.php" --data "t1=$t1&t2=$t2&t3=$t3&t4=$t4&h1=$h1&h2=$h2&h3=$h3&h4=$h4&ex=$ex&key=$secret"
+curl -s "http://localhost:8080/iot/add.php" --data "key=$secret&t1=$t1&t2=$t2&t3=$t3&t4=$t4&h1=$h1&h2=$h2&h3=$h3&h4=$h4&ex=$ex"
