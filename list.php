@@ -1,33 +1,26 @@
-<head>
-	<title>Sensor Data</title>
-</head>
-
+<html>
+<head><title>IoT raw SQL data</title></head>
 <body>
-	<h1>Temperature sensor readings</h1>
+<?php
+	require("connect.php");
+	$result = mysqli_query($link, "SELECT * FROM tempLog ORDER BY timeStamp DESC");
+	$fields_num = mysqli_num_fields($result);
 
-	<table border="1" cellspacing="1" cellpadding="1">
-		<tr>
-			<td>&nbsp;Timestamp&nbsp;</td>
-			<td>&nbsp;Chambre&nbsp;</td>
-			<td>&nbsp;Chambre2&nbsp;</td>
-			<td>&nbsp;SalleBain&nbsp;</td>
-			<td>&nbsp;Salon&nbsp;</td>
-		</tr>
+	echo "<table border='1'><tr>";
 
-		<?php
-			require("connect.php");
+	for($i=0; $i<$fields_num; $i++){
+		$field = mysqli_fetch_field($result);
+		echo "<td>{$field->name}</td>";
+	}
+	echo "</tr>\n";
 
-			$result = mysqli_query($link, "SELECT * FROM tempLog ORDER BY timeStamp DESC");
-			if($result!==FALSE){
-				while($row = mysqli_fetch_array($result)) {
-					printf("<tr><td> &nbsp;%s </td><td> &nbsp;%s&nbsp; </td><td> &nbsp;%s&nbsp; </td><td> &nbsp;%s&nbsp; </td><td> &nbsp;%s&nbsp; </td></tr>", 
-					$row["timeStamp"], $row["Chambre"], $row["Chambre2"], $row["SalleBain"], $row["Salon"]);
-				}
-				mysqli_free_result($result);
-				mysqli_close($link);
-			}
-		?>
-
-		<input type=button onClick="location.href='graph.html'" value='Graph'>
-	</table>
+	while($row = mysqli_fetch_row($result)){
+		echo "<tr>";
+		foreach($row as $cell) echo "<td>$cell</td>";
+		echo "</tr>\n";
+	}
+	mysqli_close($link);
+?>
+<input type=button onClick="location.href='graph.html'" value='Graph'>
 </body>
+</html>
