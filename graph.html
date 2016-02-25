@@ -19,14 +19,10 @@
 			option = function(){
 				this.title = {};
 				this.tooltip = {};
-				this.chart = {};
-				this.xAxis = { labels:{}, events:{} };
-				this.yAxis = { title:'' };
-
+				this.chart = { zoomType: 'x' };
+				this.xAxis = { labels: { enabled: false }, events: {} };
+				this.yAxis = { title: { text:'Celcius' } };
 				this.tooltip.formatter = function(){ return '<b>' + this.series.name + '</b><br/>' + this.x + ' = ' + this.y };
-				this.xAxis.labels.enabled = false;
-				this.yAxis.title.text = 'Celcius';
-				this.chart.zoomType = 'x';
 			}
 
 			options1 = new option();
