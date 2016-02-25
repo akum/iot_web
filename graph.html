@@ -4,11 +4,21 @@
 	<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript">
+		function syncGraph (event, chart){
+			xMin = event.min;
+			xMax = event.max;
+			ex = chart.xAxis[0].getExtremes();
+			if (ex.min != xMin || ex.max != xMax) chart.xAxis[0].setExtremes(xMin, xMax, true, false);
+		}
+
 		$(document).ready(function() {
 			inputMax = location.search.split('max=')[1]
 			options = {
 				title: {text: 'Home Temperature'},
-				xAxis: {labels: {enabled: false}},
+				xAxis: {
+					labels: {enabled: false},
+					events: { afterSetExtremes: function (event) {syncGraph(event, chart2);}}
+				},
 				yAxis: {title: {text: 'Celcius'}},
 				series: [],
 				chart: {
@@ -27,6 +37,7 @@
 			options2.chart.renderTo = "container2";
 			options2.chart.type = "area";
 			options2.title.text= "Heat Level";
+			options2.xAxis.events.afterSetExtremes = function (event) {syncGraph(event, chart1);}
 
 			if(typeof inputMax === 'undefined') inputMax = "100";
 			document.getElementById("max").value=inputMax;
@@ -35,7 +46,7 @@
 			$.getJSON("data.php?col="+tables+"&max="+inputMax, function(json){
 				options.xAxis.categories = json[0]['data'];
 				options.series = json.slice(1);
-				chart = new Highcharts.Chart(options);
+				chart1 = new Highcharts.Chart(options);
 			});
 			tables="HChambre,HChambre2,HSalleBain,HSalon,Exterieur";
 			$.getJSON("data.php?col="+tables+"&max="+inputMax, function(json){
