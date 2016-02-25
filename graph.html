@@ -1,40 +1,54 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>IoT Home</title>
-	<script src="http://code.highcharts.com/highcharts.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+	<div id="container1"></div>
+	<div id="container2"></div>
+	<input type=button value='Refresh' onclick="refresh()" id="refresh">
+	Max entries: <input type="text" id="max" onkeypress="handle(event)"><br>
 	<script type="text/javascript">
-		function syncGraph(event, chart){
-			xMin = event.min;
-			xMax = event.max;
-			ex = chart.xAxis[0].getExtremes();
-			if (ex.min != xMin || ex.max != xMax) chart.xAxis[0].setExtremes(xMin, xMax, true, false);
+		function refresh(){
+			url = document.getElementById("max").value;
+			window.location.href = "graph.html?max="+url;
 		}
+
+		function handle(e){
+			if(e.keyCode === 13){
+				$("#refresh").click();
+			}
+		}
+
+		function syncGraph(event, chart){
+			chart.xAxis[0].setExtremes(event.min, event.max, true, false);
+		}
+
+		var option = function(){
+			this.title = {};
+			this.tooltip = {};
+			this.chart = { zoomType: 'x' };
+			this.xAxis = { labels: { enabled: false }, events: {} };
+			this.yAxis = { title: { text:'Celcius' } };
+			this.tooltip.formatter = function(){ return '<b>' + this.series.name + '</b><br/>' + this.x + ' = ' + this.y };
+		}
+
+		options1 = new option();
+		options1.title.text = 'Home Temperature';
+		options1.xAxis.events.afterSetExtremes = function(event){ syncGraph(event, chart2) };
+		options1.chart.renderTo = 'container1';
+
+		options2 = new option();
+		options2.title.text= "Heat Level";
+		options2.xAxis.events.afterSetExtremes = function(event){ syncGraph(event, chart1) };
+		options2.chart.renderTo = "container2";
+		options2.chart.type = "area";
 
 		$(document).ready(function(){
 			inputMax = location.search.split('max=')[1]
 			if(typeof inputMax === 'undefined') inputMax = "100";
 			document.getElementById("max").value = inputMax;
-
-			option = function(){
-				this.title = {};
-				this.tooltip = {};
-				this.chart = { zoomType: 'x' };
-				this.xAxis = { labels: { enabled: false }, events: {} };
-				this.yAxis = { title: { text:'Celcius' } };
-				this.tooltip.formatter = function(){ return '<b>' + this.series.name + '</b><br/>' + this.x + ' = ' + this.y };
-			}
-
-			options1 = new option();
-			options1.title.text = 'Home Temperature';
-			options1.xAxis.events.afterSetExtremes = function(event){ syncGraph(event, chart2) };
-			options1.chart.renderTo = 'container1';
-
-			options2 = new option();
-			options2.title.text= "Heat Level";
-			options2.xAxis.events.afterSetExtremes = function(event){ syncGraph(event, chart1) };
-			options2.chart.renderTo = "container2";
-			options2.chart.type = "area";
 
 			tables = "Chambre, Chambre2, SalleBain, Salon";
 			$.getJSON("data.php?col=" + tables + "&max=" + inputMax, function(json){
@@ -50,23 +64,5 @@
 				chart2 = new Highcharts.Chart(options2);
 			});
 		});
-	</script>
-</head>
-<body>
-	<div id="container1"></div>
-	<div id="container2"></div>
-	<input type=button value='Refresh' onclick="refresh()" id="refresh">
-	Max entries: <input type="text" id="max" onkeypress="handle(event)"><br>
-	<script>
-		function refresh(){
-			url = document.getElementById("max").value;
-			window.location.href = "graph.html?max="+url;
-		}
-
-		function handle(e){
-			if(e.keyCode === 13){
-				$("#refresh").click();
-			}
-		}
 	</script>
 </body>
