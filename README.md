@@ -1,6 +1,6 @@
 ## Overview
 
-The goal of this project is to build a framework that will gather informations from "Smart" devices into a SQL DB and printout the values in Highcharts.
+The goal of this project is to build a generic modular framework that will gather informations from "Smart" devices into a SQL DB and printout the values with Highcharts.
 
 ## Demo
 
@@ -10,4 +10,4 @@ The goal of this project is to build a framework that will gather informations f
 
 Rename and edit files:
 * config.ini.template -> config.ini
-* iot.sh.template -> iot.sh.template
+* iot.sh.template -> iot.sh
