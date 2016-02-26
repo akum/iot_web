@@ -19,8 +19,10 @@
 			if(e.keyCode === 13) $("#refresh").click();
 		}
 
-		function syncGraph(event, chart){
-			chart.xAxis[0].setExtremes(event.min, event.max, true, false);
+		function syncExtremes(event){
+			Highcharts.each(Highcharts.charts, function (chart) {
+				if(chart !== this.chart) chart.xAxis[0].setExtremes(event.min, event.max, true, false);
+			});
 		}
 
 		var option = function(){
@@ -28,6 +30,7 @@
 			this.tooltip = {};
 			this.chart = { zoomType: 'x', panning: true, panKey: 'shift' };
 			this.xAxis = { labels: { enabled: false }, events: {} };
+			this.xAxis.events.afterSetExtremes = syncExtremes;
 			this.yAxis = { title: { text:'Celcius' } };
 			this.tooltip.formatter = function(){ return '<b>' + this.series.name + '</b><br/>' + this.x + ' = ' + this.y };
 			this.tooltip.positioner = function() { return {x: this.chart.chartWidth - this.label.width - 10 }};
@@ -35,12 +38,10 @@
 
 		options1 = new option();
 		options1.title.text = 'Home Temperature';
-		options1.xAxis.events.afterSetExtremes = function(event){ syncGraph(event, chart2) };
 		options1.chart.renderTo = 'container1';
 
 		options2 = new option();
 		options2.title.text= "Heat Level";
-		options2.xAxis.events.afterSetExtremes = function(event){ syncGraph(event, chart1) };
 		options2.chart.renderTo = "container2";
 		options2.chart.type = "area";
 
