@@ -45,24 +45,22 @@
 		options2.chart.renderTo = "container2";
 		options2.chart.type = "area";
 
-		$(document).ready(function(){
-			inputMax = location.search.split('max=')[1]
-			if(typeof inputMax === 'undefined') inputMax = "100";
-			document.getElementById("max").value = inputMax;
+		inputMax = location.search.split('max=')[1]
+		if(typeof inputMax === 'undefined') inputMax = "100";
+		document.getElementById("max").value = inputMax;
 
-			tables = "Chambre, Chambre2, SalleBain, Salon";
-			$.getJSON("data.php?col=" + tables + "&max=" + inputMax, function(json){
-				options1.xAxis.categories = json[0]['data'];
-				options1.series = json.slice(1);
-				chart1 = new Highcharts.Chart(options1);
-			});
+		tables = "Chambre, Chambre2, SalleBain, Salon";
+		$.getJSON("data.php?col=" + tables + "&max=" + inputMax, function(json){
+			options1.xAxis.categories = json[0]['data'];
+			options1.series = json.slice(1);
+			chart1 = new Highcharts.Chart(options1);
+		});
 
-			tables = "HChambre, HChambre2, HSalleBain, HSalon, Exterieur";
-			$.getJSON("data.php?col=" + tables + "&max=" + inputMax, function(json){
-				options2.xAxis.categories = json[0]['data'];
-				options2.series = json.slice(1);
-				chart2 = new Highcharts.Chart(options2);
-			});
+		tables = "HChambre, HChambre2, HSalleBain, HSalon, Exterieur";
+		$.getJSON("data.php?col=" + tables + "&max=" + inputMax, function(json){
+			options2.xAxis.categories = json[0]['data'];
+			options2.series = json.slice(1);
+			chart2 = new Highcharts.Chart(options2);
 		});
 	</script>
 </body>
