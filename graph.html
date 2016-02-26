@@ -30,6 +30,7 @@
 			this.xAxis = { labels: { enabled: false }, events: {} };
 			this.yAxis = { title: { text:'Celcius' } };
 			this.tooltip.formatter = function(){ return '<b>' + this.series.name + '</b><br/>' + this.x + ' = ' + this.y };
+			this.tooltip.positioner = function() { return {x: this.chart.chartWidth - this.label.width - 10 }};
 		}
 
 		options1 = new option();
