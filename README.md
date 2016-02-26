@@ -7,3 +7,7 @@ The goal of this project is to build a framework that will gather informations f
 ![](https://github.com/akum/iot_web/raw/master/demo.png)
 
 ## Installation
+
+Rename and edit files:
+* config.ini.template -> config.ini
+* iot.sh.template -> iot.sh.template
