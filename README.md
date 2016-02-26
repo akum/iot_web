@@ -4,4 +4,6 @@ The goal of this project is to build a framework that will gather informations f
 
 ## Demo
 
+[![](https://github.com/akum/iot_web/raw/master/demo.png)]
+
 ## Installation
