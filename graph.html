@@ -29,7 +29,7 @@
 			this.title = {};
 			this.tooltip = {};
 			this.chart = { zoomType: 'x', panning: true, panKey: 'shift' };
-			this.xAxis = { labels: { enabled: false }, events: {} };
+			this.xAxis = { labels: { enabled: false }, events: {}, crosshair: true };
 			this.xAxis.events.afterSetExtremes = syncExtremes;
 			this.yAxis = { title: { text:'Celcius' } };
 			this.tooltip.formatter = function(){ return '<b>' + this.series.name + '</b><br/>' + this.x + ' = ' + this.y };
